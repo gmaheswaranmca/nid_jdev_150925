@@ -1,0 +1,20 @@
+POST /place_order {street, place, city, zip, payment_mode, id}
+
+entities
+    PlaceOrderItem | POJO   
+        {"item_id", "qty"}
+    PlaceOrder | POJO
+        {street, place, city, zip, payMode, items:[{id,qty}...]} 
+    OrderItem | POJO
+        {"item_id", "qty", "price"}
+    Order | POJO | Document
+        {"customer_id", "amount", "pay_mode", "items":[]}
+
+controller    
+    OrderController
+        //POST /place_order
+        Order doPlaceOrder(placeOrder)
+        //GET /orders/all 
+        List<Order> findAll()
+
+OrderRepository
