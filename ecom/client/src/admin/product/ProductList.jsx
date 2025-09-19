@@ -1,16 +1,28 @@
-import { useState } from "react"
+import axios from "axios";
+import {  useEffect, useState } from "react"
 
 export default function ProductList() {
     const [products, setProducts] = useState([
-        {id:'a01', name: 'vivo y21', description:"best camera phone",
+        /*{id:'a01', name: 'vivo y21', description:"best camera phone",
          category:"mobile", 
          tags:"mobile, electronics, smartphone, android phone",
          stock:10, price:23000},
         {id:'a02', name: 'samsung 41" TV', description:"high resolution smart tv",
          category:"electronics", 
          tags:"electronics, smarttv",
-         stock:5, price:18000}
+         stock:5, price:18000}*/
     ]);
+
+    const loadProductList = async () => {
+        const baseUrl = 'http://localhost:8081';
+        const response = await axios.get(`${baseUrl}/products/all`);
+        const queriedProducts = response.data;
+        setProducts(queriedProducts);
+    }
+
+    useEffect(() => {
+        loadProductList();
+    },[]);
     return (
         <>
             <h3>List of Products</h3>
