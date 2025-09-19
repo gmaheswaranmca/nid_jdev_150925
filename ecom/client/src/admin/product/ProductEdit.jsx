@@ -12,16 +12,24 @@ export default function ProductEdit() {
     const id = params.id;
     const loadProduct = async () => {
             const baseUrl = 'http://localhost:8081';
-            const response = await axios.get(`${baseUrl}/products/${id}`);
+            const header = {"headers" :{"Authorization":`Bearer ${token}`}}
+            const response = await axios.get(`${baseUrl}/products/${id}`,header);
             const queriedProduct = response.data;
             setProduct(queriedProduct);
     }    
     useEffect(() => {
+        
+        if(localStorage.getItem("token") == null) {
+            navigate("/admin/login");
+            return;
+        }        
+    
         loadProduct();
     },[]);
     const handleUpdateProduct = async () => {
         const baseUrl = 'http://localhost:8081';
-        const response = await axios.put(`${baseUrl}/products/${id}`,{...product});
+        const header = {"headers" :{"Authorization":`Bearer ${token}`}}
+        const response = await axios.put(`${baseUrl}/products/admin/${id}`,{...product},header);
         alert('Product Updated Successfully.');
         navigate('/admin');
     };

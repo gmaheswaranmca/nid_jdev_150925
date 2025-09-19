@@ -7,6 +7,7 @@ import ProductEdit from './admin/product/ProductEdit'
 import ProductList from './admin/product/ProductList'
 import ProductCreate from './admin/product/ProductCreate'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import AdminLogin from './admin/login/AdminLogin'
 
 
 
@@ -18,6 +19,7 @@ function App() {
       <LoggedInHeader/> 
       <BrowserRouter>
         <Routes>
+          <Route path="/admin/login" element={<AdminLogin/>} />
           <Route path="/admin" element={<ProductList/>} />
           <Route path="/admin/list" element={<ProductList/>} />
           <Route path="/admin/create" element={<ProductCreate/>} />

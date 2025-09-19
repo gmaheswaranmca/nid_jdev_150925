@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 
 export default function ProductCreate() {
@@ -10,10 +10,16 @@ export default function ProductCreate() {
     const navigate = useNavigate();
     const handleCreateProduct = async () => {
         const baseUrl = 'http://localhost:8081';
-        const response = await axios.post(`${baseUrl}/products/save`,{...product});
+        const header = {"headers" :{"Authorization":`Bearer ${token}`}}
+        const response = await axios.post(`${baseUrl}/products/admin/save`,{...product},header);
         alert('Product Created Successfully.');
         navigate('/admin');
     };
+    useEffect(()=>{
+        if(localStorage.getItem("token") == null) {
+            navigate("/admin/login");
+        }        
+    },[]);
     return (
         <>
             <h3>Create Product</h3>

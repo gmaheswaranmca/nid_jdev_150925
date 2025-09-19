@@ -1,5 +1,6 @@
 import axios from "axios";
 import {  useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 
 export default function ProductList() {
     const [products, setProducts] = useState([
@@ -12,15 +13,24 @@ export default function ProductList() {
          tags:"electronics, smarttv",
          stock:5, price:18000}*/
     ]);
-
+     const navigate = useNavigate();
     const loadProductList = async () => {
         const baseUrl = 'http://localhost:8081';
-        const response = await axios.get(`${baseUrl}/products/all`);
+        
+        const token = localStorage.getItem("token");
+        alert(token)
+        const header = {"headers" :{"Authorization":`Bearer ${token}`}}
+        alert(JSON.stringify(header))
+        const response = await axios.get(`${baseUrl}/products/all`, header);
         const queriedProducts = response.data;
         setProducts(queriedProducts);
     }
 
     useEffect(() => {
+        if(localStorage.getItem("token") == null) {
+            navigate("/admin/login");
+            return;
+        }   
         loadProductList();
     },[]);
     return (
