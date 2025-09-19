@@ -36,6 +36,7 @@ export default function ProductList() {
                             <th scope="col">category</th>
                             <th scope="col">stock</th>
                             <th scope="col">price</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,6 +48,10 @@ export default function ProductList() {
                             <td>{product.category}</td>
                             <td>{product.stock}</td>
                             <td>{product.price}</td>
+                            <td>
+                                <a href={"/admin/edit/" + product.id} className="btn btn-warning">Edit</a>
+                                <button className="btn btn-danger">Delete</button>
+                            </td>
                         </tr>)
                         })}
                     </tbody>
