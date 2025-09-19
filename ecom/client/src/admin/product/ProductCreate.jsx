@@ -10,10 +10,18 @@ export default function ProductCreate() {
     const navigate = useNavigate();
     const handleCreateProduct = async () => {
         const baseUrl = 'http://localhost:8081';
-        const header = {"headers" :{"Authorization":`Bearer ${token}`}}
-        const response = await axios.post(`${baseUrl}/products/admin/save`,{...product},header);
-        alert('Product Created Successfully.');
-        navigate('/admin');
+        const token = localStorage.getItem("token");
+        const headers = {"headers" :{"Authorization":`Bearer ${token}`}}
+        try{
+            const response = await axios.post(`${baseUrl}/products/admin/save`,{...product},headers);
+            alert('Product Created Successfully.');
+            navigate('/admin');
+        } catch(error) {
+            alert('Not Authorized')
+            localStorage.removeItem("token")
+            navigate("/admin/login");
+            return 
+        }
     };
     useEffect(()=>{
         if(localStorage.getItem("token") == null) {

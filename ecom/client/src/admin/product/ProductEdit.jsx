@@ -11,11 +11,19 @@ export default function ProductEdit() {
     const params = useParams();
     const id = params.id;
     const loadProduct = async () => {
-            const baseUrl = 'http://localhost:8081';
-            const header = {"headers" :{"Authorization":`Bearer ${token}`}}
-            const response = await axios.get(`${baseUrl}/products/${id}`,header);
+        const baseUrl = 'http://localhost:8081';
+        const token = localStorage.getItem("token");
+        const headers = {"headers" :{"Authorization":`Bearer ${token}`}}
+        try{
+            const response = await axios.get(`${baseUrl}/products/${id}`,headers);
             const queriedProduct = response.data;
             setProduct(queriedProduct);
+        } catch(error) {
+            alert('Not Authorized')
+            localStorage.removeItem("token")
+            navigate("/admin/login");
+            return 
+        }
     }    
     useEffect(() => {
         
@@ -23,15 +31,24 @@ export default function ProductEdit() {
             navigate("/admin/login");
             return;
         }        
-    
+        
         loadProduct();
+        
     },[]);
     const handleUpdateProduct = async () => {
         const baseUrl = 'http://localhost:8081';
-        const header = {"headers" :{"Authorization":`Bearer ${token}`}}
-        const response = await axios.put(`${baseUrl}/products/admin/${id}`,{...product},header);
-        alert('Product Updated Successfully.');
-        navigate('/admin');
+        const token = localStorage.getItem("token");
+        const headers = {"headers" :{"Authorization":`Bearer ${token}`}}
+        try{
+            const response = await axios.put(`${baseUrl}/products/admin/${id}`,{...product},headers);
+            alert('Product Updated Successfully.');
+            navigate('/admin');
+        } catch(error) {
+            alert('Not Authorized')
+            localStorage.removeItem("token")
+            navigate("/admin/login");
+            return 
+        }
     };
     return(
         <>
